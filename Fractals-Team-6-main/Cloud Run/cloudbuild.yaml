@@ -1,0 +1,13 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/fractals-348319/fractals', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/fractals-348319/fractals']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'fractals', '--image', 'gcr.io/fractals-348319/fractals', '--region', 'us-central1', '--platform', 'managed','--port','80']
+images:
+- gcr.io/fractals-348319/fractals
